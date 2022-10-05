@@ -11,19 +11,25 @@ const express = require("express");
 const history = require("connect-history-api-fallback");
 const path = require("path");
 const cors = require("cors");
-const { notFoundHandler, globalHandler } = require("./error");
+
+// Routers
 const indexRouter = require("./routes/index.router");
 const settingsRouter = require("./routes/settings.router");
 const dataRouter = require("./routes/data.router");
 const attachmentsRouter = require("./routes/attachments.router");
 const secureRouter = require("./routes/user.router");
 const frontendRouter = require("./routes/frontend.router");
-const db = require("./db");
-const mongoSanitize = require("express-mongo-sanitize");
-const cookieParser = require("cookie-parser");
-const { authenticate } = require("./services/auth.services");
 const eventRegistrationRouter = require("./table_registration/routes/registration.router");
 const tableRegRouter = require("./table_registration/routes/index-tableregistration.router");
+
+// Database
+const db = require("./db");
+const mongoSanitize = require("express-mongo-sanitize");
+
+// Handlers
+const { notFoundHandler, globalHandler } = require("./error");
+const cookieParser = require("cookie-parser");
+const { authenticate } = require("./services/auth.services");
 // const helmet = require('helmet');
 
 /**
@@ -101,7 +107,7 @@ tableReg.use(
   express.static(path.join(__dirname, "table_registration/views"))
 );
 console.log(
-  "Serving tableregistration files at ",
+  "Serving table registration files at ",
   path.join(__dirname, "table_registration/views")
 );
 
@@ -138,7 +144,7 @@ indexRouter.use("/users", secureRouter);
 indexRouter.use("/tables", eventRegistrationRouter);
 
 // sanitize db keys to prevent injection
-api.use(mongoSanitize());
+api.use(mongoSanitize);
 
 // handle generic errors
 api.use(globalHandler);
