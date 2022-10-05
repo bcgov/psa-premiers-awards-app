@@ -15,7 +15,9 @@ jobs:
     - uses: actions/checkout@master
     - uses: actions/checkout@v2
     - uses: actions/setup-node@master
+      name: Install packages
     - run: npm install
-    - run: cd frontend
-    - run: vue-cli-service build --dest build
-   
+    - name: Install packages
+      run: cd frontend
+    - name: Vue Build
+      run: vue-cli-service build --dest build
